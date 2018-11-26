@@ -1,0 +1,28 @@
+body {
+    background-color: black;
+    font-family: 'Inconsolata', monospace;
+    color: red;
+	display: grid;
+    justify-content: center;
+    width: 768px;
+	grid-template-columns: 100%;
+}
+#site-title {
+    font-size: 2em;
+    margin: 55px 0;
+    text-align: center;
+}
+button{
+	margin-top : 20px;
+	margin-left : 10em;
+	color : white;
+	font-family : inherit;
+	background-color :  red ;
+	display:block;
+	 		font-weight:bold;
+		width:85px;
+	height:85px;
+	background: red;
+	font:bold 13px Arial;
+	border-radius:50%;
+	border: 5 px white;
