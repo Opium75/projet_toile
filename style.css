@@ -28,6 +28,8 @@ button{
 	border: 5 px white;
 	color:white;
 }
+li {
+list-style-type: none;}
 #BeforeStart{
 	width: 400px;
     height: 340px;
