@@ -31,8 +31,9 @@ button{
 li {
 list-style-type: none;}
 #BeforeStart{
-	width: 400px;
-    height: 340px;
+	top : 5%;
+	width: 30%;
+    height: 65%;
     border-radius: 5%;
     background: white;
 	color: #ed4f5b;
@@ -40,7 +41,9 @@ position : absolute;
    justify-content : center;
   left : 25%;}
  
-#photo{ width : 350px;
+#photo{ width : 90%;
+margin-left :  5%;
+margin-top : 10%;
 justify-content : center;} 
 #SelectStyle { top : 5em;}
   
