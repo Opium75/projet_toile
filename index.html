@@ -9,27 +9,36 @@
         <link href="style.css" rel="stylesheet"/>
     </head>
     <body>
-		<h1> Test Your Musical Culture</h1>
+		<h1 id="text_title"> Test Your Musical Culture</h1>
 		<div id='BeforeStart'>
-		<div id='SelectStyle'><li class="bold">
+			<div id='SelectStyle'>
+				<li class="bold">
                         Choose a Style : <input id="inputGenre" name="Genre" type="text" value=""/>
                         
                        
-                    </li>
-					<li class="bold">Name : <input id="inputRep" name="Rep" type="text" value=""/> </li>
+                </li>
+				<li class="bold">Name : <input id="inputRep" name="Rep" type="text" value=""/> 
+				</li>
 			</div>
-			<button id="BoutonStart">Let's Play !</button></div>
+			<button id="BoutonStart">Let's Play !</button>
+		</div>
+		<div>
+			<p>Style :</p> 
+					<h2 id='lecteur-youtube' style='visibility : hidden'>
+
+					</h2>
+			 <ul>
+            	 <li class="bold">
+					 What's this music ? 
+					<input id="inputRep" name="Rep" type="text" value=""/> 
+					</li>
+				</ul>
+				<button id="BoutonRep">That's it !</button>
 			</div>
-		<p>Style :</p> 
-	
-		<h2 id='lecteur-youtube' style='visibility : hidden'></h2>
-		 <ul>
-                    <li class="bold">What's this music ? <input id="inputRep" name="Rep" type="text" value=""/> </li></ul>
-					<button id="BoutonRep">That's it !</button></div>
-					
-		<h1><div> <p> Your score : </div></h1>
-		
-		<div id='FinalScore'> <p> Game Over ! Your score : </p>
+		<h1 id="text_score"> Your score : </h1>
+
+		<div id='FinalScore'> 
+				<p> Game Over ! Your score : </p>
 		<button id="BoutonRestart">Try again ?</button>
 		</div>
 		
