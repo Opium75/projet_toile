@@ -16,7 +16,7 @@ button{
 	margin-top : 20px;
 	margin-left : 10em;
 	color : white;
-	font-family : inherit;
+	font-family : 'Inconsolata', monospace;
 	background-color :  red ;
 	display:block;
 	 		font-weight:bold;
@@ -26,3 +26,21 @@ button{
 	font:bold 13px Arial;
 	border-radius:50%;
 	border: 5 px white;
+	color:white;
+}
+#BeforeStart{
+	width: 400px;
+    height: 340px;
+    border-radius: 0%;
+    background: white;
+	color: #ed4f5b;
+position : absolute;
+   justify-content : center;
+  left : 25%;}
+ 
+#photo{ width : 400px} 
+#SelectStyle { top : 5em;}
+  
+#Game{display : none;}
+
+#FinalScore{ display : none;}
