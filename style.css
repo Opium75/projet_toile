@@ -7,9 +7,9 @@ body {
     width: 768px;
 	grid-template-columns: 100%;
 }
-#site-title {
+h1 {
     font-size: 2em;
-    margin: 55px 0;
+    
     text-align: center;
 }
 button{
@@ -31,14 +31,15 @@ button{
 #BeforeStart{
 	width: 400px;
     height: 340px;
-    border-radius: 0%;
+    border-radius: 5%;
     background: white;
 	color: #ed4f5b;
 position : absolute;
    justify-content : center;
   left : 25%;}
  
-#photo{ width : 400px} 
+#photo{ width : 350px;
+justify-content : center;} 
 #SelectStyle { top : 5em;}
   
 #Game{display : none;}
