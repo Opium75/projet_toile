@@ -24,10 +24,12 @@ body {
   bottom:48px;
 }
 h1 {
-  top:-24px;
+  margin-top : 200px;
+  top:24px;
   font-weight:bold;
   color: white;
   font-size: 64px;
+text-align : center;
 }
 .container{
   margin: 0 auto;
