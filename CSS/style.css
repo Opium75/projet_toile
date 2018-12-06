@@ -110,6 +110,28 @@ button{
 li {
   list-style-type: none;
 }
+
+#POPup{
+  position: absolute;
+  background-color: rgba(0,0,0,0.75);;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+
+}
+#container{
+  display: grid;
+  grid-template-columns: 100%;
+  text-align: center;
+}
+#question{
+  font-family: Roboto-Regular;
+  font-size: 54px;
+  color: #FFFFFF;
+  line-height: 45px;
+}
+
+
 #Score{background: #333;
   font-family: 'Oswald', sans-serif;
   color: #CCC;
