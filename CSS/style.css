@@ -110,16 +110,60 @@ button{
 li {
   list-style-type: none;
 }
-#BeforeStart{
+#Score{background: #333;
+  font-family: 'Oswald', sans-serif;
+  color: #CCC;
+  text-shadow: 1px 1px 5px black;
+  
+}
+#center {
+  transform-style: preserve-3d;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+#score {
+	
+  transform-style: preserve-3d;
+  font-size:90px;
+  line-height: 90px;
+   height: 90px;
+  width: 100%;
+  
+  bottom: 0;
+  background : #313131;
+  color: white;
+  text-align: center;
 }
 
-#photo{
+#Scoretitle{
+	background : #313131;
+  font-size:60px;
+  line-height: 60px;
+   height: 60px;
+  width: 100%;
+ 
+  bottom: 0;
+  color: white;
+  text-align: center;
 }
-#SelectStyle {
+#tag {
+  transform-style: preserve-3d;
+  display: none;
+  position:absolute;
+  top: -55px;
+  left:50%;
+  transform: translateX(-50%);
+  font-size:50px;
+  line-height: 50px;
 }
-
-#Game{
-}
-
-#FinalScore{
+#title{
+  transform-style: preserve-3d;
+  position:absolute;
+  top:-125px;
+  left:50%;
+  transform: translateX(-50%);
+  font-size:70px;
+  line-height: 70px;
 }
