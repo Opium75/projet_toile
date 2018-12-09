@@ -20,8 +20,11 @@ body {
   justify-content:center;
 }
 .main{
-    background-image: linear-gradient(-180deg, #F10070 0%, #AF0359 100%);
+    background:linear-gradient(180deg, rgba(241,0,112,0.75), rgba(175,3,89,0.95)),url('../IMG/bg.jpg');
+    background-position: top;
+    background-size: cover;
 }
+
 #next{
   position: absolute;
   bottom:48px;
@@ -82,7 +85,7 @@ h2{
 
   grid-gap: 12px 45px;
 }
-.main, .selected, .long_btn, button:hover{
+.selected, .long_btn, button:hover{
   background-image: linear-gradient(180deg, #E8006B 0%, #AF0359 100%);
 }
 button{
@@ -96,9 +99,7 @@ button{
 }
 
 #photo{
-  width: 300px;
-  height: 300px;
-  background-color: grey;
+
 }
 
 .long_btn{
