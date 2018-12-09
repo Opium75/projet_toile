@@ -11,23 +11,44 @@
 				<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </head>
     <body>
+
 		<section class='main'>
 			<h1 id="title"> Teste ta culture musicale</h1>
 			<div id='next'style="font-size:2em; color:white; text-shadow: 1px 1px 5px rgb(0,0,0,0.5);"><i class="fas fa-chevron-down"></i></div>
 		</section>
 
 		<section class='start'>
+
+			<section id='POPup' class="hide">
+				<div id="Answer">
+					<span id='question'>Quelle est cette musique?</span>
+					<div><input type="text" id="name-written"> </input></div>
+					<div><button id ='answerBTN'type="button" value="Réponse" onClick="go(100);"> Répondre</button></div>
+				</div>
+
+				<div id="Result">
+					<div id="scoretitle">SCORE</div>
+					<div id="tag">+100</div>
+					<div id="score">0</div>
+				</div>
+
+				<div id='End'>
+					<p> <span id ='showResult'>Bravo</span> <span id='showName'>(nom)</span>!</p>
+				</div>
+
+				<button class='long_btn'> Réessayer</button>
+			</section>
+
 			<div class="container">
 				<div class="content">
-					<h2 id='subtitle'>Entrer ton nom</h2>
+					<h2> Entrer ton nom</h2>
 					<input type="text" id="name-written"> </input>
-
 				</div>
 
 			<div id="line"></div>
 
 				<div class="content">
-					<h2 id='subtitle'>Choisir un genre</h2>
+					<h2>Choisir un genre</h2>
 					<div class="flex-area">
 						<div id="small-btn">
 							<button id='selected'>Country</button>
@@ -44,39 +65,6 @@
 
 			</div>
 
-
-			<div class="long_btn">C’est parti </div>
+			<button class="long_btn">C’est parti</button>
 		</section>
-
-
-		<!-- <div id='BeforeStart'>
-			<div id='SelectStyle'>
-				<li class="bold">
-        	Choose a Style : <input id="inputGenre" name="Genre" type="text" value=""/>
-        </li>
-				<li class="bold">Name : <input id="inputRep" name="Rep" type="text" value=""/>
-				</li>
-			</div>
-			<button id="BoutonStart">Let's Play !</button>
-		</div>
-		<div>
-			<p>Style :</p>
-					<h2 id='lecteur-youtube' style='visibility : hidden'>
-
-					</h2>
-			 <ul>
-            	 <li class="bold">
-					 What's this music ?
-					<input id="inputRep" name="Rep" type="text" value=""/>
-					</li>
-				</ul>
-				<button id="BoutonRep">That's it !</button>
-			</div>
-		<h1 id="text_score"> Your score : </h1>
-
-		<div id='FinalScore'>
-				<p> Game Over ! Your score : </p>
-		<button id="BoutonRestart">Try again ?</button>
-		</div> -->
-
 	</body>
