@@ -11,57 +11,52 @@
 				<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </head>
     <body>
+
 		<section class='main'>
 			<h1 id="title"> Teste ta culture musicale</h1>
 			<div id='next'style="font-size:2em; color:white; text-shadow: 1px 1px 5px rgb(0,0,0,0.5);"><i class="fas fa-chevron-down"></i></div>
 		</section>
 
 		<section class='start'>
-				<section id='POPup'>
-				<div id="container">
+
+			<section id='POPup' class="hide">
+				<div id="Answer">
 					<span id='question'>Quelle est cette musique?</span>
 					<div><input type="text" id="name-written"> </input></div>
-					<div><button type="button" value="Réponse" onClick="go(100);"> Répondre</button></div>
+					<div><button id ='answerBTN'type="button" value="Réponse" onClick="go(100);"> Répondre</button></div>
 				</div>
-				<div id="Score">
-			<div id="Scoretitle">
-				SCORE:
-			</div>
-			<div id="tag">
-				+100  
-			</div>
-			<div id="score">
-				0
-			</div>
-		</div>
-		<section class='End'>
-		<div id='End'><div> <span id='GameOver'><p> Bravo (nom) !</p> <p></p></span></div>
-		<div><button class='long_btn'> Réessayer</button></div>
-		 </div>
-		 </section>
-		
+
+				<div id="Result">
+					<div id="scoretitle">SCORE</div>
+					<div id="tag">+100</div>
+					<div id="score">0</div>
+				</div>
+
+				<div id='End'>
+					<p> <span id ='showResult'>Bravo</span> <span id='showName'>(nom)</span>!</p>
+				</div>
+
+				<button class='long_btn'> Réessayer</button>
 			</section>
+
 			<div class="container">
 				<div class="content">
-					<h2 id='subtitle'>Entrer ton nom</h2>
+					<h2> Entrer ton nom</h2>
 					<input type="text" id="name-written"> </input>
-
 				</div>
 
 			<div id="line"></div>
 
 				<div class="content">
-					<h2 id='subtitle'>Choisir un genre</h2>
+					<h2>Choisir un genre</h2>
 					<div class="flex-area">
 						<div id="small-btn">
-							<button id='selected'>Rap</button>
+							<button id='selected'>Country</button>
 							<button>Country</button>
-							<button>Funk</button>
-							<button>R&B</button>
-							<button>Jazz</button>
-							<button>Hip Hop</button>
-							<button>Rock</button>
-							<button>Classique</button>
+							<button>Country</button>
+							<button>Country</button>
+							<button>Country</button>
+							<button>Country</button>
 						</div>
 						<div id="photo"></div>
 					</div>
@@ -70,10 +65,6 @@
 
 			</div>
 
-
-			
-			<button class="long_btn">C’est parti </button>
+			<button class="long_btn">C’est parti</button>
 		</section>
-</body>
-<script src="main.js"></script>
-</html>
+	</body>
