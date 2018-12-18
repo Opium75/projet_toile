@@ -4,64 +4,83 @@
 	initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <head>
         <meta charset="UTF-8"/>
-        <title>Test Your Musical Culture</title>
-				<link rel="stylesheet" href="CSS/reset.css">
-			  	<link rel="stylesheet" href="CSS/style.css">
-				<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-				<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-				<script src="jquery-3.3.1.js"></script>
+        <title>Culture musicale</title>
+			  	<link rel="stylesheet" href="style.css">
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     </head>
     <body>
+    	<h1 id="site-title"> Venez tester votre culture musicale !</h1>
+    	<div class="arrow" id="up-arrow"></div>
+        <input type="submit" value="Allez !" class="button" id="button_welcome">
+		<div id='wrapper'>
+            <div class="page-hidden" id="page1">
+                <div class="grid" id="start">
+                    <h2 class="header" id="start_header">Un mélomanonyme !</h2>
+                            <div class="image" id ="div_cover">
+                                <div class="element-hidden" id="album_pic"></div>
+                                <h3 class="photo_name element-hidden" id="album_name">
+                                </h3>
+                            </div>
+                            <div class="inputArea" id="div_answer">
+                               <h3>Titre</h3>
+                                <input type="text" maxlength="30" class="inputText"id="inputAnswerSong">
+                                <h3>Artiste</h3>
+                                <input type="text" maxlength="30" class="inputText"id="inputAnswerArtist">
+                            </div>
+                            <div class="buttonArea">
+                                <input type="submit" value="J'ai trouvé !" class="button" id="button_answer">
+                                <input type="submit" value="Un indice ?" class="button" id="button_tip">
+                                <div class="arrow button next next-hidden" id="button_next">
+                                
+                            </div>
+                            <div class="arrow button play" id="play-arrow">
+                            </div>
 
+                            </div>
+                            <div id="div_audio">
+                                <audio preload="auto" loop id="audio_player">
+                                        <source src='sound/shame.mp3' type="audio/mpeg" id="audio_source">
+                            </div>
+                </div>
 
-		<section class='main' id='bg-photo'>
-			<h1 id="title"> Teste Ta Culture Musicale</h1>
-			<div onclick='scrollWin()'id='next'style="font-size:2em; color:white; text-shadow: 1px 1px 5px rgb(0,0,0,0.5);"><i class="fas fa-chevron-down"></i></div>
-		</section>
+                        <div class="element-hidden" id="result">
+                            <div id="scoretitle">SCORE</div>
+                            <div id="tag">+100</div>
+                            <div id="score">0</div>
+                        </div>
 
-		<section class='start'>
-
-			<section id='POPup' class="hide" style="visibility : hidden">
-				<div id="Answer">
-					<span id='question'>Quelle est cette musique?</span>
-					<div><input type="text" id="name-written"> </input></div>
-					<div><button id ='answerBTN'type="button" value="Réponse" onClick="go(100);"> Répondre</button></div>
-				</div>
-
-				<div id="Result">
-					<div id="scoretitle">SCORE</div>
-					<div id="tag">+100</div>
-					<div id="score">0</div>
-				</div>
-
-				<div id='End'>
-					<p> <span id ='showResult'>Bravo</span> <span id='showName'>(nom)</span>!</p>
-				</div>
-
-				<button class='long_btn'> Réessayer</button>
-			</section>
-
-			<div class="container">
-				<div class="content">
-					<h2> Entrer ton nom</h2>
-					<input type="text" id="name-written"> </input>
-				</div>
-
-			<div id="line"></div>
-
-				<div class="content">
-					<h2>Choisir un genre</h2>
-					<div class="flex-area">
-						<div id="small-btn">
-						<li class="genre"> Choisis un genre :	<input id='inputGenre' type = "texte"> </li>
-						</div>
-						<div id="photo"><img src="IMG/pic_music.jpg" alt="" width="300px"></div>
-					</div>
-
-				</div>
-
-			</div>
-
-			<button class="long_btn">C’est parti</button>
-		</section>
+                        <div class="element-hidden" id='end'>
+                            <p> <span id ='showResult'>Bravo</span>
+                                <span id='showName'>(nom)</span>!
+                            </p>
+                        </div>
+            </div>
+            <div class="page-hidden" id="page2">
+                <div  class="grid" id="config">
+                    <h2 class="header" id="config_header">Vous êtes qui ?</h2>
+                    <div class="inputArea" id="div_input">
+                        <h3> Entrer un nom</h3>
+                        <input type="text"  maxlength="20" class="inputText" id="inputName">
+                        <h3>Choisir un genre</h3>
+                        <input type="text" maxlength="20" class="inputText" id="inputGenre" >
+                    </div>
+                    <div class="image" id="div_pic">
+                        <div id="genre_pic"></div>
+                        <h3 class="photo_name element-hidden"id="band_name">
+                            Par défaut
+                        </h3>
+                    </div>
+                    <div class="buttonArea">
+                        <input type="submit" value="C’est parti !" class="button" id="button_config">
+                        <input type="submit" value="Voir" class="button" id="button_show">
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+		<div class="arrow" id="down-arrow"></div>
+        <div class="page-hidden" id="background"></div>
 		<script src="main.js"></script>
+	</body>
+</html>
