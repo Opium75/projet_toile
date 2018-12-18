@@ -18,14 +18,21 @@ const inputName = document.querySelector('#inputName');
 const printName = document.querySelectorAll('.header');
 
 
+const inputAnswerSong = document.querySelector('#inputAnswerSong');
+const inputAnswerArtist = document.querySelector('#inputAnswerArtist');
+
+
 const buttonWelcome = document.querySelector('#button_welcome');
 const buttonConfig = document.querySelector('#button_config');
 const buttonShow =document.querySelector('#button_show');
+const buttonError = document.querySelector('#button_error');
 const buttonAnswer = document.querySelector('#button_answer');
 const buttonTip = document.querySelector('#button_tip');
 
 const buttonPlay = document.querySelector('#play-arrow');
 const buttonNext = document.querySelector('#button_next');
+
+const sliderVolume = document.querySelector('#slider_volume');
 
 const background = document.querySelector('#background');
 
@@ -80,6 +87,40 @@ let changePicGenre = function(idGenre) {
             showElement(bandName);
 })})}
 
+let pissedOff = function (bydefault,message) {
+    const textGenre = document.querySelector('#text_genre');
+    if (textGenre.innerHTML === bydefault) {
+        textGenre.innerHTML = message;
+    }
+    else {
+        textGenre.innerHTML = bydefault;
+    }
+}
+
+let genreInvalid = function(element) {
+    if(element.value==='') {
+        pissedOff('Choisir un genre','Entre un genre, bordel');
+    }
+    element.classList.add('answer-wrong');
+    //showElement(buttonError);
+
+}
+
+inputGenre.addEventListener('click', event => {
+    if(event.target.classList.contains('answer-wrong')) {
+        event.target.classList.remove('answer-wrong');
+        event.target.value = '';
+        pissedOff('Choisir un genre','Entre un genre, bordel');
+    }
+})
+inputGenre.addEventListener('keyup', event => {
+    if(event.target.classList.contains('answer-wrong')) {
+        event.target.classList.remove('answer-wrong');
+        pissedOff('Choisir un genre','Entre un genre, bordel');
+
+    }
+})
+
 
 buttonShow.addEventListener('click', event =>
  fetch('http://api.napster.com/v2.2/genres/'+`${inputGenre.value}`+'?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')	
@@ -90,7 +131,17 @@ buttonShow.addEventListener('click', event =>
                 const idGenre = genreDetails.genres[0].id;
                 idGenreGlobal = idGenre;
                 changePicGenre(idGenre);
+            }
+            else {
+                genreInvalid(inputGenre);
             }}))
+
+buttonError.addEventListener('click', event => {
+    inputGenre.value = '';
+    inputGenre.classList.remove('answer-wrong');
+    hideElement(event.target);
+
+})
 
 let fillPlaylist = function(newArray,n) {
     for(i=0;i<n;i++) {
@@ -111,16 +162,22 @@ let getTracksAndStart = function(idGenre) {
                             })}
                   
 buttonConfig.addEventListener('click',event => {
+    event.preventDefault();
+    printName.forEach( element => changeUsername(inputName.value,element));
  fetch('http://api.napster.com/v2.2/genres/'+`${inputGenre.value}`+'?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')	
         .then(response => response.json())
         .then( data => { const genreDetails = data;
             if(genreDetails.genres!==undefined&&genreDetails.genres[0]!==undefined) {
-                event.preventDefault();
                 const idGenre = genreDetails.genres[0].id;
                 idGenreGlobal = idGenre;
                 console.log(idGenreGlobal);
                 getTracksAndStart(idGenre);
-            }})})
+            }
+            else {
+            genreInvalid(inputGenre);
+        }
+    })})
+
 
 
 let checkNameTrack = (num,answer,tracks) => {
@@ -136,34 +193,44 @@ let checkNameArtist = (num,answer,tracks) => {
 }
 
 
-let analyseAnswer = function(answerSong,answerArtist,num,tracks) {
+let analyseAnswer = function(num,tracks) {
+    const inputSong = $('#inputAnswerSong');
+    const inputArtist = $('#inputAnswerArtist');
     var i=0;
-    i+=animateAnswer(answerSong,checkNameTrack(num,answerSong,tracks),tracks[playlist[num]].name);
-    i+=animateAnswer(answerArtist,checkNameArtist(num,answerArtist,tracks),tracks[playlist[num]].artistName);
+    i+=animateAnswer(inputAnswerSong,inputSong,checkNameTrack(num,inputAnswerSong,tracks),tracks[playlist[num]].name);
+    i+=animateAnswer(inputAnswerArtist,inputArtist,checkNameArtist(num,inputAnswerArtist,tracks),tracks[playlist[num]].artistName);
     if(i===0) soundEffect2(shame);
     if (i==2) soundEffect2(hearHear);
 }
 
-let animateAnswer = (element,isRight,trueAnswer) => {
+let animateAnswer = (element,elementJQ,isRight,trueAnswer) => {
+    elementJQ.prop('readonly', true);
     if(isRight) {
-
-        element.style.color = 'green';
         element.classList.add('answer-right');
         return 1;
 
     }
     else {
-        element.style.color = 'red';
         element.value = trueAnswer;
         element.classList.add('answer-wrong');
         return 0;
     }
+
 }
 
-let unAnimateAnswer = element => {
+let unAnimateAnswer = (element,elementJQ) => {
+    elementJQ.prop('readonly',false);
     element.classList.remove('answer-right');
     element.classList.remove('answer-wrong');
-    element.style.color = 'inherit';
+    element.value ='';
+}
+
+let unAnimateAllAnswers = function() {
+    const inputSong = $('#inputAnswerSong');
+    const inputArtist = $('#inputAnswerArtist');
+    unAnimateAnswer(inputAnswerSong,inputSong);
+    unAnimateAnswer(inputAnswerArtist,inputArtist);
+
 }
 
 
@@ -200,13 +267,7 @@ buttonAnswer.addEventListener('click', event => {
         backToWelcome();
     }
     else {
-        const inputAnswerSong = document.querySelector('#inputAnswerSong');
-        const inputAnswerArtist = document.querySelector('#inputAnswerArtist');
-        const qong = dataGlobal.tracks[playlist[count]].name;
-        const artist = dataGlobal.tracks[playlist[count]].artistName;
-        analyseAnswer(inputAnswerSong,inputAnswerArtist,count,dataGlobal.tracks);
-        //showElement(albumPicture);
-        //showElement(albumName);
+        analyseAnswer(count,dataGlobal.tracks);
         answerPage(pageStart);
         count+=1;
     }  
@@ -220,8 +281,7 @@ let backToWelcome = function() {
         buttonNext.classList.remove('next-active');
         buttonNext.classList.add('next-hidden');
     }
-    unAnimateAnswer(inputAnswerSong);
-    unAnimateAnswer(inputAnswerArtist);
+    unAnimateAllAnswers();
     closeArrows();
 };
 
@@ -230,12 +290,12 @@ let restoreAllButtons = function() {
     
     buttons.forEach(button => {
         if(button.classList.contains('element-hidden')) {
-            button.classList.remove('element-hidden');
-            button.classList.add('element-active');
+            showElement(button);
         }
     })
     buttonNext.classList.remove('next-active');
     buttonNext.classList.add('next-hidden');
+    hideElement(buttonError);
 
 }
 
@@ -260,15 +320,16 @@ let soundEffect2 = link => {
 }
 
 
+
 let changeCover = (num,picture,name,tracks) => {
 	const albumId = tracks[playlist[num]].albumId;
     const album = tracks[playlist[num]].albumName;
-    console.log(album);
 	fetch('http://api.napster.com/v2.2/albums/'+`${albumId}`+'/images?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
     .then(response => response.json())
 		.then(data => {
 			const coversArtist = data;
-			const urlCover = coversArtist.images[4].url;
+			const urlCover = coversArtist.images[2].url;
+            console.log(urlCover);
             changeValue(album,name,'Un artist ?');
 			picture.style.background = `url('${urlCover}') no-repeat top / 100%`;
 		});
@@ -316,13 +377,26 @@ buttonTip.addEventListener('click', event => {
 
 buttonPlay.addEventListener('click',event => playPause(event.target));
 
+sliderVolume.addEventListener('input', event => {
+    var thumb  = document.getElementById('curtain');
+    var audio = document.getElementById('audio_player');
+    audio.volume = event.target.value;
+    sliderAnimation(event.target.value,event.target,curtain);
+})
+
+let sliderAnimation =function(val,slider,thumb) {
+  var pc = val/(slider.max - slider.min); /* the percentage slider value */
+  var distance = 100 * pc;
+  var move= "translateX(" + distance + "%)";  
+  thumb.style.webkitTransform = move;
+  thumb.style.MozTransform = move;
+  thumb.style.msTransform = move;
+}
+
 buttonNext.addEventListener('click',event => {
-    const inputAnswerSong = document.querySelector('#inputAnswerSong');
-    const inputAnswerArtist = document.querySelector('#inputAnswerArtist');
     event.target.classList.remove('next-active');
     event.target.classList.add('next-hidden');
-    unAnimateAnswer(inputAnswerSong);
-    unAnimateAnswer(inputAnswerArtist);
+    unAnimateAllAnswers();
     changeTrack(count,albumPicture,albumName,dataGlobal.tracks);
 });
 

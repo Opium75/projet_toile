@@ -10,8 +10,9 @@ input {
     color: inherit;
     background-color: inherit;
 }
-
-
+#button_welcome,#background,#slider_volume,#shadow_volume,#curtain  {
+    position: absolute;
+}
 #site-title,.header,.photo_name {
 	text-align: center;
 }
@@ -23,7 +24,7 @@ input {
 .image {
     grid-area: picture;
     border-bottom: solid white 4em;
-    background-image: linear-gradient(black,black);
+    background-color: black;
 }
 
 .button {
@@ -36,6 +37,9 @@ input {
 .button:hover {
     background-color : white;
     color : #AF0359;
+}
+
+.button:hover, .slider:hover {
     transform: scale(1.2);
 }
 
@@ -44,13 +48,18 @@ input {
     height : 13em;
 }
 
-#button_config,#button_answer, #button_next{
+#button_config,#button_answer {
     width: 12em;
     height : 12em;
 }
-#button_show,#button_tip {
+#button_show,#button_tip, #button_error{
     width: 6em;
     height : 6em;
+}
+
+#button_next {
+    width : 10em;
+    height : 10em;
 }
 
 
@@ -89,8 +98,8 @@ input {
 
 #config {
     grid-template-areas: 
-        "header header"
-        "input picture"
+        "header header "
+        "input  picture"
         "but picture";
 }
 
@@ -144,6 +153,14 @@ input {
 	font-size: 2em;
 }
 
+#button_error {
+    background-image: url(img/error.svg);
+    animation: swell ease-in-out 2s infinite;
+}
+#button_error:hover {
+    background-image: url(img/error2.svg);
+}
+
 #up-arrow,#down-arrow {
 	width: 10em;
     height: 10em;
@@ -168,18 +185,14 @@ input {
 }
 
 #button_welcome {
-    position : absolute;
     right : 0;
     left : 0;
 }
 
 #background {
-    position: absolute;
     z-index : -1;
     top :0; bottom : 0;
     left : 0; right : 0;
-    width : 100vw;
-    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
 
 }
@@ -205,14 +218,47 @@ input {
     background-image: url(img/pause_active.svg);
 }
 
-.next {
+.next-active {
     background-image: url(img/next.svg);
-    animation: playing ease-in-out 0.5s infinite;
+    animation: fadeIn linear 1s forwards;
+    animation: playing ease-out 1s infinite;
 }
 
-.next:hover {
+.next-active:hover {
     background-image: url(img/next_active.svg);
 }
+
+.slider {
+    background-image: url(img/slider_active.svg);
+    background-size: cover;
+    top : 10em;
+    right : 2em;
+    mask: url(img/slider_clip.svg);
+    mask-size: 6em 6em;
+    transition-property : transform;
+    transition-timing-function : ease;
+    transition-duration : 0.5s;
+
+}
+
+#shadow_volume {
+    z-index: 1;
+    display:inline;
+    opacity: 0;
+}
+
+#curtain{
+    background-color: white;
+    right:5.5em;
+    transform: translateX(5.5em);
+    
+}
+
+#slider_volume,#shadow_volume,#curtain {
+    width : 6em;
+    height: 6em;
+}
+
 .arrow,#button_welcome {
     margin: auto;
 }
@@ -230,10 +276,12 @@ input {
 }
 
 .answer-wrong {
+    color : red;
     animation: quiver linear 0.2s forwards;
 }
 
 .answer-right {
+    color : green;
     animation: swell linear 0.2s forwards;
 }
 
@@ -270,7 +318,7 @@ input {
     75% {transform: translateX(-.5%);}
 }
 
-.page-active, .element-active,.next-active {
+.page-active, .element-active {
     animation: fadeIn linear 1s forwards;
 }
 

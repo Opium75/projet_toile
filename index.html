@@ -31,11 +31,14 @@
                             <div class="buttonArea">
                                 <input type="submit" value="J'ai trouvé !" class="button" id="button_answer">
                                 <input type="submit" value="Un indice ?" class="button" id="button_tip">
-                                <div class="arrow button next next-hidden" id="button_next">
-                                
+                                <div class="arrow button next-hidden" id="button_next"></div>
                             </div>
-                            <div class="arrow button play" id="play-arrow">
-                            </div>
+                            <div id="audio_control">
+                                <div class="arrow button play" id="play-arrow"></div>
+                                <div class="slider" id="slider_volume">
+                                    <input type="range" min=0 max=1 step=any value=1 id="shadow_volume">
+                                    <div id="curtain"></div>
+                                </div>
 
                             </div>
                             <div id="div_audio">
@@ -62,8 +65,9 @@
                     <div class="inputArea" id="div_input">
                         <h3> Entrer un nom</h3>
                         <input type="text"  maxlength="20" class="inputText" id="inputName">
-                        <h3>Choisir un genre</h3>
+                        <h3 id='text_genre'>Choisir un genre</h3>
                         <input type="text" maxlength="20" class="inputText" id="inputGenre" >
+                        <input type='button' class='button arrow element-hidden' id='button_error'>
                     </div>
                     <div class="image" id="div_pic">
                         <div id="genre_pic"></div>
