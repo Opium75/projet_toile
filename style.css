@@ -248,7 +248,8 @@ input {
 }
 
 #curtain{
-    background-color: white;
+    background-image:url('img/curtain.svg');
+    background-size: cover;
     right:5.5em;
     transform: translateX(5.5em);
     
