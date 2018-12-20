@@ -46,18 +46,6 @@
                                         <source src='sound/shame.mp3' type="audio/mpeg" id="audio_source">
                             </div>
                 </div>
-
-                        <div class="element-hidden" id="result">
-                            <div id="scoretitle">SCORE</div>
-                            <div id="tag">+100</div>
-                            <div id="score">0</div>
-                        </div>
-
-                        <div class="element-hidden" id='end'>
-                            <p> <span id ='showResult'>Bravo</span>
-                                <span id='showName'>(nom)</span>!
-                            </p>
-                        </div>
             </div>
             <div class="page-hidden" id="page2">
                 <div  class="grid" id="config">
@@ -67,11 +55,21 @@
                         <input type="text"  maxlength="20" class="inputText" id="inputName">
                         <h3 id='text_genre'>Choisir un genre</h3>
                         <input type="text" maxlength="20" class="inputText" id="inputGenre" >
-                        <input type='button' class='button arrow element-hidden' id='button_error'>
                     </div>
-                    <div id="selectArea">
-                        <select class="select" id="select_number">
-                        <select class="select" id="select_time">
+                    <div class="div_playlistConfigArea"id="div_playlistConfig">
+                        <input type="number" min="1" max="40" value="20" class="inputText sentence" id="inputLengthPlaylist">
+                        <h3 class="sentence">morceaux des</h3>
+                        <input type="number" min="10" max="500" value="40" class="inputText sentence" id="inputTopNthTracks">
+                        <h3 class="sentence">plus populaires</h3>
+                        <select class="select sentence" id="select_time">
+                            <option value="day">aujourd'hui</option>
+                            <option value="week" selected>
+                            cette semaine</option>
+                            <option value="month">ce mois-ci</option>
+                            <option value="year">cette année</option>
+                            <option value="life">de tous les temps</option>
+                        </select>
+
                     </div>
                     <div class="image" id="div_pic">
                         <div id="genre_pic"></div>
@@ -80,7 +78,7 @@
                         </h3>
                     </div>
 
-                    <div class="buttonArea">
+                    <div class="buttonArea" id="div_button_config">
                         <input type="submit" value="C’est parti !" class="button" id="button_config">
                         <input type="submit" value="Voir" class="button" id="button_show">
                     </div>

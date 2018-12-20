@@ -1,94 +1,81 @@
-const nb_tracks = 20;
-
-const genrePicture = document.querySelector('#genre_pic');
-const albumPicture = document.querySelector('#album_pic');
-
 
 const upArrow = document.querySelector('#up-arrow');
 const downArrow = document.querySelector('#down-arrow');
 
-const pageStart = document.querySelector('#page1');
-const pageConfig = document.querySelector('#page2');
 
-const bandName = document.querySelector('#band_name');
-const albumName = document.querySelector('#album_name');
+//////////////////////////////////
+
+                /*CONSTANTS*/
 
 const inputGenre = document.querySelector('#inputGenre');
 const inputName = document.querySelector('#inputName');
-const printName = document.querySelectorAll('.header');
 
-
-const inputAnswerSong = document.querySelector('#inputAnswerSong');
-const inputAnswerArtist = document.querySelector('#inputAnswerArtist');
+const inputLengthPlaylist = document.querySelector('#inputLengthPlaylist');
+const inputTopNthTracks = document.querySelector('#inputTopNthTracks');
+const selectTime = document.querySelector("#select_time");
 
 
 const buttonWelcome = document.querySelector('#button_welcome');
 const buttonConfig = document.querySelector('#button_config');
 const buttonShow =document.querySelector('#button_show');
-const buttonError = document.querySelector('#button_error');
 const buttonAnswer = document.querySelector('#button_answer');
 const buttonTip = document.querySelector('#button_tip');
-
-const buttonPlay = document.querySelector('#play-arrow');
 const buttonNext = document.querySelector('#button_next');
 
+const buttonPlay = document.querySelector('#play-arrow');
 const sliderVolume = document.querySelector('#slider_volume');
-
-const background = document.querySelector('#background');
 
 const shame = 'sound/shame.mp3';
 const hearHear = 'sound/hearhear.mp3';
 
+                /*VARIABLES*/
 var idGenreGlobal;
-
-var score ;
 var dataGlobal;
+
 var count;
 
-var playlist = new Array(nb_tracks);
+//var score;
 
-buttonWelcome.addEventListener('click', function(event) {
-    openArrows();
-	changePage(pageConfig);
-    hideElement(buttonWelcome);
-	event.preventDefault();}
-);
+var playlist = [];
 
-const randint = range  => Math.trunc(Math.random()*range);
+                /*INPUT VARIABLES*/
 
-const changeValue =
+
+var lengthPlaylist = 20;
+//day, week, month, year, life
+var time = 'week';
+var topNthTracks = 40;
+
+//////////////////////////////////
+
+
+                /*BASIC FUNCTIONS*/
+let randint = range  => Math.trunc(Math.random()*range);
+
+let changeValue =
       (value, element,bydefault) => element.innerHTML = value || `${bydefault}`;
 
-const changeUsername = (newName,element) => element.innerHTML =
+let changeUsername = (newName,element) => element.innerHTML =
       (newName !== '')? "Vous êtes " + newName + " !" : "Vous êtes qui déjà ?";
 
 
-inputName.addEventListener('keyup', event => 
-                printName.forEach( element => changeUsername(event.target.value,element))
-                )
+let fillPlaylist = function(newArray,n) {
+    var nbArray = [];
+    var k;
+    var spliced;
+    for(i=0;i<n;i++) {
+        nbArray.push(i);
+    }
+    for(j=0;j<n;j++) {
+        k = randint(n);
+        spliced = nbArray.splice(k-j,1);
+        newArray.push(spliced[0]);
+    }
+}
 
-let changePicGenre = function(idGenre) {
-    fetch('http://api.napster.com/v2.2/genres/'+`${idGenre}`+'/artists/top?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm&limit=20')
-    .then(response => response.json())
-    .then( data => {
-        const topArtists = data;
-        const i = randint(20);
-        const idArtist = topArtists.artists[i].id;
-        const nameArtist = topArtists.artists[i].name;
-    fetch('http://api.napster.com/v2.2/artists/'+`${idArtist}`+'/images?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
-        .then(response => response.json())
-        .then( data => {
-            const coversArtist = data;
-            const urlPicChosen = coversArtist.images[0].url;
-            console.log(urlPicChosen);
-            genrePicture.style.background = `url('${urlPicChosen}') no-repeat top / 100%`;
-            changeValue(nameArtist,bandName,'Un artist ?');
-            showElement(genrePicture);
-            showElement(bandName);
-})})}
 
 let pissedOff = function (bydefault,message) {
-    const textGenre = document.querySelector('#text_genre');
+    var textGenre = document.querySelector('#text_genre');
     if (textGenre.innerHTML === bydefault) {
         textGenre.innerHTML = message;
     }
@@ -102,303 +89,17 @@ let genreInvalid = function(element) {
         pissedOff('Choisir un genre','Entre un genre, bordel');
     }
     element.classList.add('answer-wrong');
-    //showElement(buttonError);
-
 }
 
-inputGenre.addEventListener('click', event => {
-    if(event.target.classList.contains('answer-wrong')) {
-        event.target.classList.remove('answer-wrong');
-        event.target.value = '';
-        pissedOff('Choisir un genre','Entre un genre, bordel');
-    }
-})
-inputGenre.addEventListener('keyup', event => {
-    if(event.target.classList.contains('answer-wrong')) {
-        event.target.classList.remove('answer-wrong');
-        pissedOff('Choisir un genre','Entre un genre, bordel');
-
-    }
-})
-
-
-buttonShow.addEventListener('click', event =>
- fetch('http://api.napster.com/v2.2/genres/'+`${inputGenre.value}`+'?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')	
-        .then(response => response.json())
-        .then( data => { const genreDetails = data;
-            if(genreDetails.genres!==undefined&&genreDetails.genres[0]!==undefined) {
-                hideElement(genrePicture);
-                const idGenre = genreDetails.genres[0].id;
-                idGenreGlobal = idGenre;
-                changePicGenre(idGenre);
-            }
-            else {
-                genreInvalid(inputGenre);
-            }}))
-
-buttonError.addEventListener('click', event => {
-    inputGenre.value = '';
-    inputGenre.classList.remove('answer-wrong');
-    hideElement(event.target);
-
-})
-
-let fillPlaylist = function(newArray,n) {
-    for(i=0;i<n;i++) {
-        newArray[i] = randint(n);
-    }
-}
-
-let getTracksAndStart = function(idGenre) {
-    fetch('http://api.napster.com/v2.2/genres/'+`${idGenre}`+'/tracks/top?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
-            .then(response => response.json())
-                .then(data => {
-                    const topTracks = data;
-                    dataGlobal = topTracks;
-                    changePage(pageStart);
-                    fillPlaylist(playlist,nb_tracks);
-                    changeTrack(0,albumPicture,albumName,topTracks.tracks);
-                    count=0;
-                            })}
-                  
-buttonConfig.addEventListener('click',event => {
-    event.preventDefault();
-    printName.forEach( element => changeUsername(inputName.value,element));
- fetch('http://api.napster.com/v2.2/genres/'+`${inputGenre.value}`+'?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')	
-        .then(response => response.json())
-        .then( data => { const genreDetails = data;
-            if(genreDetails.genres!==undefined&&genreDetails.genres[0]!==undefined) {
-                const idGenre = genreDetails.genres[0].id;
-                idGenreGlobal = idGenre;
-                console.log(idGenreGlobal);
-                getTracksAndStart(idGenre);
-            }
-            else {
-            genreInvalid(inputGenre);
+let isInGenres = function(string,genresArray) {
+    for(i=0;i<genresArray.length;i++) {
+        if(genresArray[i].name === string||genresArray[i].shortcut === string) {
+            idGenreGlobal = genresArray[i].id;
+            return true;
         }
-    })})
-
-
-
-let checkNameTrack = (num,answer,tracks) => {
-    // console.log(answer.value);
-     //console.log(tracks[playlist[num]].name);
-    return(tracks[playlist[num]].name===answer.value);
-}
-
-let checkNameArtist = (num,answer,tracks) => {
-    //console.log(answer.value);
-    //console.log(tracks[playlist[num]].artistName);
-    return(tracks[playlist[num]].artistName===answer.value);
-}
-
-
-let analyseAnswer = function(num,tracks) {
-    const inputSong = $('#inputAnswerSong');
-    const inputArtist = $('#inputAnswerArtist');
-    var i=0;
-    i+=animateAnswer(inputAnswerSong,inputSong,checkNameTrack(num,inputAnswerSong,tracks),tracks[playlist[num]].name);
-    i+=animateAnswer(inputAnswerArtist,inputArtist,checkNameArtist(num,inputAnswerArtist,tracks),tracks[playlist[num]].artistName);
-    if(i===0) soundEffect2(shame);
-    if (i==2) soundEffect2(hearHear);
-}
-
-let animateAnswer = (element,elementJQ,isRight,trueAnswer) => {
-    elementJQ.prop('readonly', true);
-    if(isRight) {
-        element.classList.add('answer-right');
-        return 1;
-
     }
-    else {
-        element.value = trueAnswer;
-        element.classList.add('answer-wrong');
-        return 0;
-    }
-
+    return false;
 }
-
-let unAnimateAnswer = (element,elementJQ) => {
-    elementJQ.prop('readonly',false);
-    element.classList.remove('answer-right');
-    element.classList.remove('answer-wrong');
-    element.value ='';
-}
-
-let unAnimateAllAnswers = function() {
-    const inputSong = $('#inputAnswerSong');
-    const inputArtist = $('#inputAnswerArtist');
-    unAnimateAnswer(inputAnswerSong,inputSong);
-    unAnimateAnswer(inputAnswerArtist,inputArtist);
-
-}
-
-
-let answerPage = function(page) {
-    const divCover = document.getElementById('div_cover');
-    const divAnswer = document.getElementById('div_answer');
-    showPage(background);
-    hideElement(buttonAnswer);
-    hideElement(buttonTip);
-    if(albumPicture.classList.contains('element-hidden')) {
-        showElement(albumPicture);
-        showElement(albumName);
-    }
-    audioNext(buttonPlay);
-
-}
-
-let audioNext = function(element) {
-    var audio = document.getElementById('audio_player');
-    if (audio.paused) {
-        audio.play();
-        element.classList.remove('play');
-        element.classList.add('pause')
-    }
-    ;
-    buttonNext.classList.remove('next-hidden');
-    buttonNext.classList.add('next-active');
-}
-
-buttonAnswer.addEventListener('click', event => {
-    event.preventDefault();
-    audioStop(buttonPlay);
-    if(count==19) {
-        backToWelcome();
-    }
-    else {
-        analyseAnswer(count,dataGlobal.tracks);
-        answerPage(pageStart);
-        count+=1;
-    }  
-})
-
-let backToWelcome = function() {
-    closeAllPages();
-    restoreAllButtons();
-    audioStop(buttonPlay);
-    if(buttonNext.classList.contains('next-active')) {
-        buttonNext.classList.remove('next-active');
-        buttonNext.classList.add('next-hidden');
-    }
-    unAnimateAllAnswers();
-    closeArrows();
-};
-
-let restoreAllButtons = function() {
-    const buttons = document.querySelectorAll('.button');
-    
-    buttons.forEach(button => {
-        if(button.classList.contains('element-hidden')) {
-            showElement(button);
-        }
-    })
-    buttonNext.classList.remove('next-active');
-    buttonNext.classList.add('next-hidden');
-    hideElement(buttonError);
-
-}
-
-upArrow.addEventListener('click',event => backToWelcome());
-
-downArrow.addEventListener('click',event => backToWelcome());
-
-let soundEffect = link => {
-    var sound = link;
-    console.log(sound);
-    var audio = $('#audio_player');
-    var source = $('#audio_source');
-    audio[0].pause();
-    source.attr('src',sound);
-    audio[0].load();
-    audio[0].play();
-}
-
-let soundEffect2 = link => {
-    var sound2 = new Audio(link);
-    sound2.play();
-}
-
-
-
-let changeCover = (num,picture,name,tracks) => {
-	const albumId = tracks[playlist[num]].albumId;
-    const album = tracks[playlist[num]].albumName;
-	fetch('http://api.napster.com/v2.2/albums/'+`${albumId}`+'/images?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
-    .then(response => response.json())
-		.then(data => {
-			const coversArtist = data;
-			const urlCover = coversArtist.images[2].url;
-            console.log(urlCover);
-            changeValue(album,name,'Un artist ?');
-			picture.style.background = `url('${urlCover}') no-repeat top / 100%`;
-		});
-}
-
-
-let changeAudio = (num,tracks) => {
-	const urlAudio = tracks[playlist[num]].previewURL;
-	var audio = $('#audio_player');
-    var source = $('#audio_source');
-    audio[0].pause();
-    source.attr('src',urlAudio);
-    audio[0].load();
-    playPause(buttonPlay);
-    
-}
-
-let changeTrack = (num,picture,name,tracks) => {
-    changeCover(num,picture,name,tracks);
-    changeAudio(num,tracks);
-    buttonNext.classList.remove('next-active');
-    buttonNext.classList.add('next-hidden');
-    if(!background.classList.contains('page-hidden')) {
-        background.classList.remove('page-active');
-        background.classList.add('page-hidden');
-        showElement(buttonAnswer);
-        showElement(buttonTip);
-    }
-    hideElement(albumPicture);
-    hideElement(albumName);
-}
-
-let isHidden = element => element.classList.contains('element-hidden');
-
-buttonTip.addEventListener('click', event => {
-    if (isHidden(albumPicture)) {
-        showElement(albumPicture);
-        showElement(albumName);
-    }
-    else {
-        hideElement(albumPicture);
-        hideElement(albumName);
-    }
-})
-
-buttonPlay.addEventListener('click',event => playPause(event.target));
-
-sliderVolume.addEventListener('input', event => {
-    var thumb  = document.getElementById('curtain');
-    var audio = document.getElementById('audio_player');
-    audio.volume = event.target.value;
-    sliderAnimation(event.target.value,event.target,curtain);
-})
-
-let sliderAnimation =function(val,slider,thumb) {
-  var pc = val/(slider.max - slider.min); /* the percentage slider value */
-  var distance = 100 * pc;
-  var move= "translateX(" + distance + "%)";  
-  thumb.style.webkitTransform = move;
-  thumb.style.MozTransform = move;
-  thumb.style.msTransform = move;
-}
-
-buttonNext.addEventListener('click',event => {
-    event.target.classList.remove('next-active');
-    event.target.classList.add('next-hidden');
-    unAnimateAllAnswers();
-    changeTrack(count,albumPicture,albumName,dataGlobal.tracks);
-});
 
 let playPause = function(element) {
     var audio = document.getElementById('audio_player');
@@ -457,11 +158,406 @@ let closeArrows = function() {
 
 let hideElement =  element => {
     element.classList.remove('element-hidden');
-	element.classList.add('element-hidden');
+    element.classList.add('element-hidden');
 }
 
-const showElement = element => {
-	element.classList.remove('element-hidden');
+let showElement = element => {
+    element.classList.remove('element-hidden');
     element.classList.remove('element-active');
     element.classList.add('element-active');
 }
+
+
+
+let checkNameTrack = (num,answer,tracks) => {
+    // console.log(answer.value);
+     //console.log(tracks[playlist[num]].name);
+    return(tracks[playlist[num]].name===answer.value);
+}
+
+let checkNameArtist = (num,answer,tracks) => {
+    //console.log(answer.value);
+    //console.log(tracks[playlist[num]].artistName);
+    return(tracks[playlist[num]].artistName===answer.value);
+}
+
+
+let analyseAnswer = function(num,tracks) {
+    var inputSong = document.querySelector('#inputAnswerSong');
+    var inputSongJS = $('#inputAnswerSong');
+    var inputArtist = document.querySelector('#inputAnswerArtist');
+    var inputArtistJS = $('#inputAnswerArtist');
+    var i=0;
+    i+=animateAnswer(inputSong,inputSongJS,checkNameTrack(num,inputSong,tracks),tracks[playlist[num]].name);
+    i+=animateAnswer(inputArtist,inputArtistJS,checkNameArtist(num,inputArtist,tracks),tracks[playlist[num]].artistName);
+    if(i===0) soundEffect2(shame);
+    if (i==2) soundEffect2(hearHear);
+}
+
+let animateAnswer = (element,elementJQ,isRight,trueAnswer) => {
+    elementJQ.prop('readonly', true);
+    if(isRight) {
+        element.classList.add('answer-right');
+        return 1;
+
+    }
+    else {
+        element.value = trueAnswer;
+        element.classList.add('answer-wrong');
+        return 0;
+    }
+
+}
+
+let unAnimateAnswer = (element,elementJQ) => {
+    elementJQ.prop('readonly',false);
+    element.classList.remove('answer-right');
+    element.classList.remove('answer-wrong');
+    element.value ='';
+}
+
+let unAnimateAllAnswers = function() {
+    var inputSong = document.querySelector('#inputAnswerSong');
+    var inputSongJS = $('#inputAnswerSong');
+    var inputArtist = document.querySelector('#inputAnswerArtist');
+    var inputArtistJS = $('#inputAnswerArtist');
+    unAnimateAnswer(inputSong,inputSongJS);
+    unAnimateAnswer(inputArtist,inputArtistJS);
+
+}
+
+
+
+
+/*let soundEffect = link => {
+    var sound = link;
+    onsole.log(sound);
+    var audio = $('#audio_player');
+    var source = $('#audio_source');
+    audio[0].pause();
+    source.attr('src',sound);
+    audio[0].load();
+    audio[0].play();
+}*/
+
+let soundEffect2 = link => {
+    var sound2 = new Audio(link);
+    sound2.play();
+}
+
+
+let isHidden = element => element.classList.contains('element-hidden');
+
+
+let audioNext = function(element) {
+    var audio = document.getElementById('audio_player');
+    if (audio.paused) {
+        audio.play();
+        element.classList.remove('play');
+        element.classList.add('pause')
+    }
+    buttonNext.classList.remove('next-hidden');
+    buttonNext.classList.add('next-active');
+}
+
+
+                /*ADVANCED FUNCTIONS*/
+
+
+let showGenre = function(idGenre) {
+    var genrePicture = document.querySelector('#genre_pic');
+    var bandName = document.querySelector('#band_name');
+    fetch('http://api.napster.com/v2.2/genres/'+`${idGenre}`+'/artists/top?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm&range='+`${time}`+'&limit='+`${topNthTracks}`)
+    .then(response => response.json())
+    .then( data => {
+        var topArtists = data;
+        var i = randint(topNthTracks);
+        var idArtist = topArtists.artists[i].id;
+        var nameArtist = topArtists.artists[i].name;
+    fetch('http://api.napster.com/v2.2/artists/'+`${idArtist}`+'/images?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
+        .then(response => response.json())
+        .then( data => {
+            var coversArtist = data;
+            var urlPicChosen = coversArtist.images[0].url;
+            //console.log(urlPicChosen);
+            genrePicture.style.background = `url('${urlPicChosen}') no-repeat top / 100%`;
+            changeValue(nameArtist,bandName,'Un artist ?');
+            showElement(genrePicture);
+            showElement(bandName);
+})})}
+
+    
+
+let getGenreAndShow = function(input,canvas) {
+    fetch('http://api.napster.com/v2.2/genres?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&lang=fr-FR')
+    .then(reponse => reponse.json())
+    .then(data => {
+        var allGenres = data;
+        if(!isInGenres(input.value,allGenres.genres)) {
+            genreInvalid(input);
+        }
+        else {
+            var idGenre = idGenreGlobal;
+            showGenre(idGenre);
+        }})}
+
+let getGenreAndStart = function(input) {
+fetch('http://api.napster.com/v2.2/genres?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4&lang=fr-FR')
+    .then(reponse => reponse.json())
+    .then(data => {
+        var allGenres = data;
+        if(!isInGenres(input.value,allGenres.genres)) {
+            genreInvalid(input);
+        }
+        else {
+            var idGenre = idGenreGlobal;
+            getTracksAndStart(idGenre);
+    }})}
+
+let getTracksAndStart = function(id) {
+    var albumPicture = document.querySelector('#album_pic');
+    var albumName = document.querySelector('#album_name');
+    var pageStart = document.querySelector('#page1');
+    fetch('http://api.napster.com/v2.2/genres/'+`${id}`+'/tracks/top?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm&range='+`${time}`+'&limit='+`${topNthTracks}`)
+            .then(response => response.json())
+                .then(data => {
+                    var topTracks = data;
+
+                    dataGlobal = topTracks;
+                    playlist = [];
+                    changePage(pageStart);
+                    fillPlaylist(playlist,lengthPlaylist);
+                    changeTrack(0,albumPicture,albumName,topTracks.tracks);
+                    count=0;
+                            })}
+
+let answerPage = function(page) {
+    var albumPicture = document.querySelector('#album_pic');
+    var divCover = document.getElementById('div_cover');
+    var divAnswer = document.getElementById('div_answer');
+    var albumName = document.querySelector('#album_name');
+    var background = document.querySelector('#background');
+    showPage(background);
+    hideElement(buttonAnswer);
+    hideElement(buttonTip);
+    if(albumPicture.classList.contains('element-hidden')) {
+        showElement(albumPicture);
+        showElement(albumName);
+    }
+    audioNext(buttonPlay);
+
+}
+
+
+let backToWelcome = function() {
+    closeAllPages();
+    restoreAllButtons();
+    audioStop(buttonPlay);
+    if(buttonNext.classList.contains('next-active')) {
+        buttonNext.classList.remove('next-active');
+        buttonNext.classList.add('next-hidden');
+    }
+    unAnimateAllAnswers();
+    closeArrows();
+};
+
+let restoreAllButtons = function() {
+    var buttons = document.querySelectorAll('.button');
+    buttons.forEach(button => {
+        if(button.classList.contains('element-hidden')) {
+            showElement(button);
+        }
+    })
+    buttonNext.classList.remove('next-active');
+    buttonNext.classList.add('next-hidden');
+
+}
+
+let changeCover = (num,picture,name,tracks) => {
+    var albumName = document.querySelector('#album_name');
+    var albumId = tracks[playlist[num]].albumId;
+    var albumTitle = tracks[playlist[num]].albumName;
+    fetch('http://api.napster.com/v2.2/albums/'+`${albumId}`+'/images?apikey=ZjBmNmM3YzUtMmY3MS00ODkwLWIwOTctNGE1ZWFjMGU3YmZm')
+    .then(response => response.json())
+        .then(data => {
+            var coversArtist = data;
+            var urlCover = coversArtist.images[2].url;
+            //console.log(urlCover);
+            changeValue(albumTitle,name,'Un artist ?');
+            picture.style.background = `url('${urlCover}') no-repeat top / 100%`;
+        });
+}
+
+
+let changeAudio = (num,tracks) => {
+    var urlAudio = tracks[playlist[num]].previewURL;
+    var audio = $('#audio_player');
+    var source = $('#audio_source');
+    audio[0].pause();
+    source.attr('src',urlAudio);
+    audio[0].load();
+    playPause(buttonPlay);
+    
+}
+
+let changeTrack = (num,picture,name,tracks) => {
+    var albumPicture = document.querySelector('#album_pic');
+    var albumName = document.querySelector('#album_name');
+    var background = document.querySelector('#background');
+    changeCover(num,picture,name,tracks);
+    changeAudio(num,tracks);
+    buttonNext.classList.remove('next-active');
+    buttonNext.classList.add('next-hidden');
+    if(!background.classList.contains('page-hidden')) {
+        background.classList.remove('page-active');
+        background.classList.add('page-hidden');
+        showElement(buttonAnswer);
+        showElement(buttonTip);
+    }
+    hideElement(albumPicture);
+    hideElement(albumName);
+}
+
+let sliderAnimation =function(val,slider,thumb) {
+  var pc = val/(slider.max - slider.min); /* the percentage slider value */
+  var distance = 100* pc;
+  var move= "translateX(" + distance + "%)";  
+  thumb.style.webkitTransform = move;
+  thumb.style.MozTransform = move;
+  thumb.style.msTransform = move;
+}
+
+
+
+//////////////////////////////////
+
+buttonWelcome.addEventListener('click', function(event) {
+    var pageConfig = document.querySelector('#page2');
+    openArrows();
+	changePage(pageConfig);
+    hideElement(buttonWelcome);
+	event.preventDefault();}
+);
+
+
+inputName.addEventListener('keyup', event =>  {
+    var printName = document.querySelectorAll('.header');
+    printName.forEach( element =>
+                     changeUsername(event.target.value,element))
+                 })
+
+inputGenre.addEventListener('click', event => {
+    if(event.target.classList.contains('answer-wrong')) {
+        event.target.classList.remove('answer-wrong');
+        event.target.value = '';
+        pissedOff('Choisir un genre','Entre un genre, bordel');
+    }
+})
+inputGenre.addEventListener('keyup', event => {
+    if(event.target.classList.contains('answer-wrong')) {
+        event.target.classList.remove('answer-wrong');
+        pissedOff('Choisir un genre','Entre un genre, bordel');
+
+    }
+})
+
+inputTopNthTracks.addEventListener('change',event => {
+    if(event.target.value<inputLengthPlaylist.value) {
+        inputLengthPlaylist.value = event.target.value;
+    }
+    TopNthTracks = event.target.value;
+})
+
+inputLengthPlaylist.addEventListener('change',event => {
+    if(event.target.value>inputTopNthTracks.value) {
+        inputTopNthTracks.value = event.target.value;
+    }
+    lengthPlaylist = event.target.value;
+})
+
+selectTime.addEventListener('change', event => {
+    time = event.target.value;
+})
+
+
+
+var lengthPlaylist = 20;
+//day, week, month, year, life
+var time = 'week';
+var topNthTracks = 40;
+
+
+
+
+buttonShow.addEventListener('click', event => {
+    event.preventDefault();
+    var pictureGenre = document.querySelector('#genre_pic');
+    getGenreAndShow(inputGenre,pictureGenre);
+})
+                  
+buttonConfig.addEventListener('click',event => {
+    var printName = document.querySelectorAll('.header');
+    event.preventDefault();
+    printName.forEach( element => changeUsername(inputName.value,element));
+    getGenreAndStart(inputGenre);
+        })
+
+
+
+
+
+
+buttonAnswer.addEventListener('click', event => {
+    var pageStart = document.querySelector('#page1');
+    event.preventDefault();
+    audioStop(buttonPlay);
+    if(count>=lengthPlaylist-1) {
+        backToWelcome();
+    }
+    else {
+        analyseAnswer(count,dataGlobal.tracks);
+        answerPage(pageStart);
+        count+=1;
+    }  
+})
+
+
+upArrow.addEventListener('click',event => backToWelcome());
+
+downArrow.addEventListener('click',event => backToWelcome());
+
+
+
+buttonTip.addEventListener('click', event => {
+    var albumPicture = document.querySelector('#album_pic');
+    var albumName = document.querySelector('#album_name');
+    if (isHidden(albumPicture)) {
+        showElement(albumPicture);
+        showElement(albumName);
+    }
+    else {
+        hideElement(albumPicture);
+        hideElement(albumName);
+    }
+})
+
+buttonPlay.addEventListener('click',event => playPause(event.target));
+
+sliderVolume.addEventListener('input', event => {
+    var thumb  = document.getElementById('curtain');
+    var audio = document.getElementById('audio_player');
+    audio.volume = event.target.value;
+    sliderAnimation(event.target.value,event.target,curtain);
+})
+
+
+
+buttonNext.addEventListener('click',event => {
+    var albumPicture = document.querySelector('#album_pic');
+    var albumName = document.querySelector('#album_name');
+    event.target.classList.remove('next-active');
+    event.target.classList.add('next-hidden');
+    unAnimateAllAnswers();
+    changeTrack(count,albumPicture,albumName,dataGlobal.tracks);
+});
+
