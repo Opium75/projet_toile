@@ -397,11 +397,12 @@ let changeCover = (num,picture,name,tracks) => {
 
 let changeAudio = (num,tracks) => {
     var urlAudio = tracks[playlist[num]].previewURL;
-    var audio = $('#audio_player');
-    var source = $('#audio_source');
-    audio[0].pause();
-    source.attr('src',urlAudio);
-    audio[0].load();
+    var audioJQ = $('#audio_player');
+    var source = document.querySelector('#audio_source');
+    audioJQ[0].pause();
+    //source.attr('src',urlAudio);
+    source.setAttribute('src', urlAudio); 
+    audioJQ[0].load();
     playPause(buttonPlay);
     
 }
@@ -518,15 +519,9 @@ buttonAnswer.addEventListener('click', event => {
     var pageStart = document.querySelector('#page1');
     event.preventDefault();
     audioStop(buttonPlay);
-    if(count>=lengthPlaylist-1) {
-        backToWelcome();
-    }
-    else {
-        analyseAnswer(count,dataGlobal.tracks);
-        answerPage(pageStart);
-        count+=1;
-    }  
-})
+    analyseAnswer(count,dataGlobal.tracks);
+    answerPage(pageStart);
+    })
 
 
 upArrow.addEventListener('click',event => backToWelcome());
@@ -565,6 +560,13 @@ buttonNext.addEventListener('click',event => {
     event.target.classList.remove('next-active');
     event.target.classList.add('next-hidden');
     unAnimateAllAnswers();
-    changeTrack(count,albumPicture,albumName,dataGlobal.tracks);
+    if(count>=lengthPlaylist-1) {
+        backToWelcome();
+    }
+    else {
+        count+=1;
+        changeTrack(count,albumPicture,albumName,dataGlobal.tracks);
+    }  
+    
 });
 
