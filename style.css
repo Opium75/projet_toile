@@ -112,6 +112,7 @@ option {
 }
 
 .grid {
+    grid-gap: 20px;
     display: grid;
     align-content: space-around;
     justify-items: space-between: 
@@ -170,7 +171,6 @@ option {
 
 #div_pic,#genre_pic {
     height : 210px;
-    margin : 20px;
 }
 #div_cover,#album_pic, #div_pic,#genre_pic  {
     width : 325px;
