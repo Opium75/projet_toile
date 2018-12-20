@@ -32,7 +32,7 @@ const hearHear = 'sound/hearhear.mp3';
 var idGenreGlobal;
 var dataGlobal;
 
-var count;
+var count=0;
 
 //var score;
 
@@ -44,7 +44,7 @@ var playlist = [];
 var lengthPlaylist = 20;
 //day, week, month, year, life
 var time = 'week';
-var topNthTracks = 40;
+var topNthTracks = 40; //API does not support over 200
 
 //////////////////////////////////
 
@@ -59,15 +59,15 @@ let changeUsername = (newName,element) => element.innerHTML =
       (newName !== '')? "Vous êtes " + newName + " !" : "Vous êtes qui déjà ?";
 
 
-let fillPlaylist = function(newArray,n) {
+let fillPlaylist = function(newArray,nb,topNthTracks) {
     var nbArray = [];
     var k;
     var spliced;
-    for(i=0;i<n;i++) {
+    for(i=0;i<topNthTracks;i++) {
         nbArray.push(i);
     }
-    for(j=0;j<n;j++) {
-        k = randint(n);
+    for(j=0;j<nb;j++) {
+        k = randint(topNthTracks);
         spliced = nbArray.splice(k-j,1);
         newArray.push(spliced[0]);
     }
@@ -260,6 +260,12 @@ let audioNext = function(element) {
     buttonNext.classList.add('next-active');
 }
 
+let getInfo = function() {
+    topNthTracks = parseInt(inputTopNthTracks.value);
+    lengthPlaylist = parseInt(inputLengthPlaylist.value);
+    time = selectTime.value;
+}
+
 
                 /*ADVANCED FUNCTIONS*/
 
@@ -306,6 +312,7 @@ fetch('http://api.napster.com/v2.2/genres?apikey=YTkxZTRhNzAtODdlNy00ZjMzLTg0MWI
     .then(reponse => reponse.json())
     .then(data => {
         var allGenres = data;
+        getInfo();        
         if(!isInGenres(input.value,allGenres.genres)) {
             genreInvalid(input);
         }
@@ -322,11 +329,10 @@ let getTracksAndStart = function(id) {
             .then(response => response.json())
                 .then(data => {
                     var topTracks = data;
-
                     dataGlobal = topTracks;
                     playlist = [];
                     changePage(pageStart);
-                    fillPlaylist(playlist,lengthPlaylist);
+                    fillPlaylist(playlist,lengthPlaylist,topNthTracks);
                     changeTrack(0,albumPicture,albumName,topTracks.tracks);
                     count=0;
                             })}
@@ -478,6 +484,7 @@ inputLengthPlaylist.addEventListener('change',event => {
 selectTime.addEventListener('change', event => {
     time = event.target.value;
 })
+
 
 
 
